@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10171" systemVersion="15D21" minimumToolsVersion="Automatic">
+    <entity name="Clipping" representedClassName="Clipping" syncable="YES">
+        <attribute name="date" attributeType="Date" syncable="YES"/>
+        <attribute name="images" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="notes" attributeType="String" syncable="YES"/>
+        <relationship name="collections" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Collection" inverseName="clippings" inverseEntity="Collection" syncable="YES"/>
+    </entity>
+    <entity name="Collection" representedClassName="Collection" syncable="YES">
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <relationship name="clippings" toMany="YES" deletionRule="Nullify" destinationEntity="Clipping" inverseName="collections" inverseEntity="Clipping" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Clipping" positionX="412" positionY="60" width="128" height="120"/>
+        <element name="Collection" positionX="-45" positionY="0" width="128" height="73"/>
+    </elements>
+</model>
