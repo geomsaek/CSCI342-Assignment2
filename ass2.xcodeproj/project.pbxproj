@@ -7,35 +7,43 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C90C74A21CCE2596002A4B44 /* ClippingListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90C74A11CCE2596002A4B44 /* ClippingListViewController.swift */; };
+		C977847A1CD5A1FF00C3919D /* ClippingDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97784791CD5A1FF00C3919D /* ClippingDetailViewController.swift */; };
+		C977847C1CD5BABF00C3919D /* ClippingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C977847B1CD5BABF00C3919D /* ClippingCell.swift */; };
+		C97784801CD5CF8300C3919D /* ubuntu.png in Resources */ = {isa = PBXBuildFile; fileRef = C977847F1CD5CF8300C3919D /* ubuntu.png */; };
+		C97784821CD6339300C3919D /* NewClippingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97784811CD6339300C3919D /* NewClippingView.swift */; };
 		C97C2ADF1CC49B350069AF4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C2ADE1CC49B350069AF4E /* AppDelegate.swift */; };
-		C97C2AE11CC49B350069AF4E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C2AE01CC49B350069AF4E /* ViewController.swift */; };
 		C97C2AE41CC49B350069AF4E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C97C2AE21CC49B350069AF4E /* Main.storyboard */; };
 		C97C2AE71CC49B350069AF4E /* ass2.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C97C2AE51CC49B350069AF4E /* ass2.xcdatamodeld */; };
 		C97C2AE91CC49B350069AF4E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C97C2AE81CC49B350069AF4E /* Assets.xcassets */; };
 		C97C2AEC1CC49B350069AF4E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C97C2AEA1CC49B350069AF4E /* LaunchScreen.storyboard */; };
 		C97C2AF41CC49C480069AF4E /* ScrapBookModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C2AF31CC49C480069AF4E /* ScrapBookModel.swift */; };
-		C97C2B0E1CC51F2D0069AF4E /* ubuntu.png in Resources */ = {isa = PBXBuildFile; fileRef = C97C2B0D1CC51F2D0069AF4E /* ubuntu.png */; };
 		C97C2B131CC5D2200069AF4E /* Collection+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C2B0F1CC5D2200069AF4E /* Collection+CoreDataProperties.swift */; };
 		C97C2B141CC5D2200069AF4E /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C2B101CC5D2200069AF4E /* Collection.swift */; };
 		C97C2B151CC5D2200069AF4E /* Clipping+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C2B111CC5D2200069AF4E /* Clipping+CoreDataProperties.swift */; };
 		C97C2B161CC5D2200069AF4E /* Clipping.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C2B121CC5D2200069AF4E /* Clipping.swift */; };
+		C97C2B181CC5DA450069AF4E /* CollectionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C2B171CC5DA450069AF4E /* CollectionListViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C90C74A11CCE2596002A4B44 /* ClippingListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClippingListViewController.swift; sourceTree = "<group>"; };
+		C97784791CD5A1FF00C3919D /* ClippingDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClippingDetailViewController.swift; sourceTree = "<group>"; };
+		C977847B1CD5BABF00C3919D /* ClippingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClippingCell.swift; sourceTree = "<group>"; };
+		C977847F1CD5CF8300C3919D /* ubuntu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ubuntu.png; sourceTree = "<group>"; };
+		C97784811CD6339300C3919D /* NewClippingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewClippingView.swift; sourceTree = "<group>"; };
 		C97C2ADB1CC49B350069AF4E /* ass2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ass2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C97C2ADE1CC49B350069AF4E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		C97C2AE01CC49B350069AF4E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		C97C2AE31CC49B350069AF4E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C97C2AE61CC49B350069AF4E /* ass2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ass2.xcdatamodel; sourceTree = "<group>"; };
 		C97C2AE81CC49B350069AF4E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C97C2AEB1CC49B350069AF4E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C97C2AED1CC49B350069AF4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C97C2AF31CC49C480069AF4E /* ScrapBookModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrapBookModel.swift; sourceTree = "<group>"; };
-		C97C2B0D1CC51F2D0069AF4E /* ubuntu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ubuntu.png; sourceTree = "<group>"; };
 		C97C2B0F1CC5D2200069AF4E /* Collection+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Collection+CoreDataProperties.swift"; path = "../Collection+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C97C2B101CC5D2200069AF4E /* Collection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Collection.swift; path = ../Collection.swift; sourceTree = "<group>"; };
 		C97C2B111CC5D2200069AF4E /* Clipping+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Clipping+CoreDataProperties.swift"; path = "../Clipping+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C97C2B121CC5D2200069AF4E /* Clipping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Clipping.swift; path = ../Clipping.swift; sourceTree = "<group>"; };
+		C97C2B171CC5DA450069AF4E /* CollectionListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionListViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,7 +60,6 @@
 		C97C2AD21CC49B350069AF4E = {
 			isa = PBXGroup;
 			children = (
-				C97C2B0D1CC51F2D0069AF4E /* ubuntu.png */,
 				C97C2ADD1CC49B350069AF4E /* ass2 */,
 				C97C2ADC1CC49B350069AF4E /* Products */,
 			);
@@ -69,18 +76,23 @@
 		C97C2ADD1CC49B350069AF4E /* ass2 */ = {
 			isa = PBXGroup;
 			children = (
+				C977847F1CD5CF8300C3919D /* ubuntu.png */,
 				C97C2B0F1CC5D2200069AF4E /* Collection+CoreDataProperties.swift */,
 				C97C2B101CC5D2200069AF4E /* Collection.swift */,
 				C97C2B111CC5D2200069AF4E /* Clipping+CoreDataProperties.swift */,
 				C97C2B121CC5D2200069AF4E /* Clipping.swift */,
 				C97C2ADE1CC49B350069AF4E /* AppDelegate.swift */,
-				C97C2AE01CC49B350069AF4E /* ViewController.swift */,
+				C97C2B171CC5DA450069AF4E /* CollectionListViewController.swift */,
+				C90C74A11CCE2596002A4B44 /* ClippingListViewController.swift */,
+				C97784791CD5A1FF00C3919D /* ClippingDetailViewController.swift */,
+				C97C2AF31CC49C480069AF4E /* ScrapBookModel.swift */,
 				C97C2AE21CC49B350069AF4E /* Main.storyboard */,
+				C97784811CD6339300C3919D /* NewClippingView.swift */,
+				C977847B1CD5BABF00C3919D /* ClippingCell.swift */,
 				C97C2AE81CC49B350069AF4E /* Assets.xcassets */,
 				C97C2AEA1CC49B350069AF4E /* LaunchScreen.storyboard */,
 				C97C2AED1CC49B350069AF4E /* Info.plist */,
 				C97C2AE51CC49B350069AF4E /* ass2.xcdatamodeld */,
-				C97C2AF31CC49C480069AF4E /* ScrapBookModel.swift */,
 			);
 			path = ass2;
 			sourceTree = "<group>";
@@ -143,7 +155,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C97C2B0E1CC51F2D0069AF4E /* ubuntu.png in Resources */,
+				C97784801CD5CF8300C3919D /* ubuntu.png in Resources */,
 				C97C2AEC1CC49B350069AF4E /* LaunchScreen.storyboard in Resources */,
 				C97C2AE91CC49B350069AF4E /* Assets.xcassets in Resources */,
 				C97C2AE41CC49B350069AF4E /* Main.storyboard in Resources */,
@@ -159,10 +171,14 @@
 			files = (
 				C97C2AF41CC49C480069AF4E /* ScrapBookModel.swift in Sources */,
 				C97C2B151CC5D2200069AF4E /* Clipping+CoreDataProperties.swift in Sources */,
-				C97C2AE11CC49B350069AF4E /* ViewController.swift in Sources */,
+				C90C74A21CCE2596002A4B44 /* ClippingListViewController.swift in Sources */,
+				C97784821CD6339300C3919D /* NewClippingView.swift in Sources */,
 				C97C2AE71CC49B350069AF4E /* ass2.xcdatamodeld in Sources */,
 				C97C2B141CC5D2200069AF4E /* Collection.swift in Sources */,
+				C97C2B181CC5DA450069AF4E /* CollectionListViewController.swift in Sources */,
 				C97C2ADF1CC49B350069AF4E /* AppDelegate.swift in Sources */,
+				C977847C1CD5BABF00C3919D /* ClippingCell.swift in Sources */,
+				C977847A1CD5A1FF00C3919D /* ClippingDetailViewController.swift in Sources */,
 				C97C2B131CC5D2200069AF4E /* Collection+CoreDataProperties.swift in Sources */,
 				C97C2B161CC5D2200069AF4E /* Clipping.swift in Sources */,
 			);

@@ -23,10 +23,9 @@ class ScrapbookModel : NSObject, NSFetchedResultsControllerDelegate {
     var result: [AnyObject]?
     
     
+    
     // add a new collection
     func addCollection(collectionName: String){
-        
-        print("============== ADD COLLECTION ==============")
         
         // add a collection
         let collection = NSEntityDescription.entityForName("Collection", inManagedObjectContext: context)
@@ -35,18 +34,13 @@ class ScrapbookModel : NSObject, NSFetchedResultsControllerDelegate {
         
         do {
             try context.save()
-            print("Added new Collection: \(collectionName)")
         }catch {
             fatalError("Error in saving collection")
         }
-        
-        print("==========================================")
     }
     
     // create a new clipping
     func addClipping(clippingName: String, clippingNote: String, clippingImage: String){
-        
-        print("============== ADD CLIPPING ==============")
         
         let clipping = NSEntityDescription.entityForName("Clipping", inManagedObjectContext: context)
         let clipItem = Clipping(entity: clipping!, insertIntoManagedObjectContext: context)
@@ -57,9 +51,7 @@ class ScrapbookModel : NSObject, NSFetchedResultsControllerDelegate {
         
         do {
             try context.save()
-            print("Added new Clipping: \(clippingName)")
         }catch {
-            fatalError("Error in saving clipping")
         }
         
         print("==========================================")
@@ -93,6 +85,137 @@ class ScrapbookModel : NSObject, NSFetchedResultsControllerDelegate {
         }
         
         print("==========================================")
+    }
+    
+    func getCollection() -> AnyObject {
+        let fReq: NSFetchRequest = NSFetchRequest(entityName: "Collection")
+        let sorter: NSSortDescriptor = NSSortDescriptor(key: "name", ascending: false)
+        fReq.sortDescriptors = [sorter]
+        
+        do {
+            result = try self.context.executeFetchRequest(fReq)
+        }catch let nserror1 as NSError{
+            error = nserror1
+            result = nil
+            fatalError(String(error))
+        }
+        
+        return result!
+    }
+    
+    func countCollections()-> Int {
+        
+        let colRes = self.getCollection()
+        
+        return colRes.count
+    }
+    
+    func getClipping(collection: String) -> AnyObject {
+        
+        let fReq: NSFetchRequest = NSFetchRequest(entityName: "Collection")
+        fReq.predicate = NSPredicate(format:"name CONTAINS '\(collection)' ")
+        let sorter: NSSortDescriptor = NSSortDescriptor(key: "name" , ascending: false)
+        fReq.sortDescriptors = [sorter]
+        
+        do {
+            result = try self.context.executeFetchRequest(fReq)
+        } catch let nserror1 as NSError{
+            error = nserror1
+            result = nil
+            fatalError(String(error))
+        }
+        
+        var clipList : AnyObject?
+        let fetchedCollections = result!
+        
+        for resultItem in fetchedCollections {
+            let collectionItem = resultItem as! Collection
+            
+            clipList = collectionItem.clippings!
+            
+            break;
+        }
+        
+        return clipList!
+    }
+    
+    func countClippings(collection: String) -> Int {
+        
+        let len = self.getClipping(collection)
+        return len.count
+    
+    }
+    
+    func getCollectionNames(index: Int) -> String {
+    
+        let fReq: NSFetchRequest = NSFetchRequest(entityName: "Collection")
+        let sorter: NSSortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+        fReq.sortDescriptors = [sorter]
+        
+        do {
+            result = try self.context.executeFetchRequest(fReq)
+        }catch let nserror1 as NSError{
+            error = nserror1
+            result = nil
+            fatalError(String(error))
+        }
+        
+        var count = 0
+        var collectionName = ""
+        for res in result! {
+            let temp = res as! Collection
+            
+            if count == index {
+                collectionName = res.name
+                break
+            }
+            
+            count += 1
+        }
+        
+        return collectionName
+        
+    }
+    
+    func getClippingNames(collectionName: String) -> Array<Array <String>> {
+        
+        let fReq: NSFetchRequest = NSFetchRequest(entityName: "Collection")
+        fReq.predicate = NSPredicate(format:"name CONTAINS '\(collectionName)' ")
+        let sorter: NSSortDescriptor = NSSortDescriptor(key: "name" , ascending: false)
+        fReq.sortDescriptors = [sorter]
+        
+        do {
+            result = try self.context.executeFetchRequest(fReq)
+        } catch let nserror1 as NSError{
+            error = nserror1
+            result = nil
+            fatalError(String(error))
+        }
+        
+        var clipList : AnyObject?
+        let fetchedCollections = result!
+        var clipping = [[String]()]
+        var temp : [String]
+        
+        for resultItem in fetchedCollections {
+            let collectionItem = resultItem as! Collection
+            
+            let clipList = collectionItem.clippings
+            
+            for clip in clipList! {
+
+                temp = [String]()
+                temp.append(clip.name!)
+                temp.append(clip.notes!!)
+                temp.append(clip.images!!)
+                temp.append(String(clip.date!))
+                clipping.append(temp)
+                temp.removeAll()
+            }
+        }
+        
+        clipping.removeAtIndex(0)
+        return clipping
     }
     
     // print collections
@@ -139,15 +262,16 @@ class ScrapbookModel : NSObject, NSFetchedResultsControllerDelegate {
         print("==========================================")
     }
     
-    // print clippings
+    // get all clipping names
     
-    func displayClippings(){
-        
-        print("============== DISPLAY CLIPPINGS ==============")
+    func displayClippings() -> Array<Array<String>> {
         
         let fReq: NSFetchRequest = NSFetchRequest(entityName: "Clipping")
         let sorter: NSSortDescriptor = NSSortDescriptor(key: "name", ascending: false)
         fReq.sortDescriptors = [sorter]
+        
+        var clippingNames = [[String()]]
+        var tempClip = [String]()
         
         do {
             result = try self.context.executeFetchRequest(fReq)
@@ -159,15 +283,19 @@ class ScrapbookModel : NSObject, NSFetchedResultsControllerDelegate {
         
         for resultItem in result!{
             let resClipItem = resultItem as! Clipping
-            print("Clipping Name: \(resClipItem.name), Clipping Image: \(resClipItem.images), Clipping Date: \(resClipItem.date)")
             
-            // if the clipping has a collection
-            if let temp = resClipItem.collections {
-                print("Collection Name: \(temp.name)")
-            }
+            tempClip.append(resClipItem.name!)
+            tempClip.append(resClipItem.notes!)
+            tempClip.append(resClipItem.images!)
+            tempClip.append(String(resClipItem.date!))
+            
+            clippingNames.append(tempClip)
+            
+            tempClip.removeAll()
         }
         
-        print("==========================================")
+        clippingNames.removeAtIndex(0)
+        return clippingNames
     }
     
     func displayClippingsofCollection(collectionName: String){
@@ -213,7 +341,6 @@ class ScrapbookModel : NSObject, NSFetchedResultsControllerDelegate {
     }
     
     // add a clipping to a collection
-    
     
     func addClipToCollection(clippingName: String, collectionName: String){
         
