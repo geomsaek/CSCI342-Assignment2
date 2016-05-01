@@ -40,7 +40,7 @@ class ScrapbookModel : NSObject, NSFetchedResultsControllerDelegate {
     }
     
     // create a new clipping
-    func addClipping(clippingName: String, clippingNote: String, clippingImage: String){
+    func addClipping(clippingName: String, clippingNote: String, clippingImage: String, clippingDate: String){
         
         let clipping = NSEntityDescription.entityForName("Clipping", inManagedObjectContext: context)
         let clipItem = Clipping(entity: clipping!, insertIntoManagedObjectContext: context)
@@ -52,9 +52,8 @@ class ScrapbookModel : NSObject, NSFetchedResultsControllerDelegate {
         do {
             try context.save()
         }catch {
+            fatalError("Error in saving clipping")
         }
-        
-        print("==========================================")
     }
     
     
@@ -85,6 +84,30 @@ class ScrapbookModel : NSObject, NSFetchedResultsControllerDelegate {
         }
         
         print("==========================================")
+    }
+    
+    // delete a collection
+    func deleteCollection(collectionName: String){
+        let predicate = NSPredicate(format: "name == '\(collectionName)'")
+        
+        let fetchRequest = NSFetchRequest(entityName: "Collection")
+        fetchRequest.predicate = predicate
+        
+        do {
+            let fetchedEntities = try self.context.executeFetchRequest(fetchRequest) as! [Collection]
+            if let entityToDelete = fetchedEntities.first {
+                self.context.deleteObject(entityToDelete)
+            }
+        } catch {
+            fatalError("Error in deleting entity")
+        }
+        
+        do {
+            try self.context.save()
+        } catch {
+            fatalError("Error in saving removed entity")
+        }
+
     }
     
     func getCollection() -> AnyObject {
@@ -344,8 +367,6 @@ class ScrapbookModel : NSObject, NSFetchedResultsControllerDelegate {
     
     func addClipToCollection(clippingName: String, collectionName: String){
         
-        print("============== Add Clipping " + String(clippingName) + " to Collection: " + String(collectionName) + " ==============")
-        
         let colPredicate = NSPredicate(format: "name == '\(collectionName)'")
         
         let colFetchRequest = NSFetchRequest(entityName: "Collection")
@@ -379,8 +400,6 @@ class ScrapbookModel : NSObject, NSFetchedResultsControllerDelegate {
         }catch {
             fatalError("Error in saving clipping to collection")
         }
-        
-        print("==========================================")
     }
     
 }

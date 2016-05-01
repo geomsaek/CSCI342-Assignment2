@@ -83,6 +83,26 @@ class CollectionListViewController: UITableViewController,NSFetchedResultsContro
         return cell
     }
     
+    // method is called when user edits item in table
+    // in context when user swipes to delete
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+        
+        if editingStyle == UITableViewCellEditingStyle.Delete{
+            
+            let index = indexPath.row
+            var collectName : String
+            
+            if indexPath.row > 0 {
+                collectName = collections.getCollectionNames(index-1)
+                collections.deleteCollection(collectName)
+            }
+            
+            self.tableView.reloadData()
+        }
+        
+    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
         let clippingViewController = segue.destinationViewController as! ClippingListViewController

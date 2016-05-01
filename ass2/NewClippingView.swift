@@ -16,7 +16,7 @@ class NewClippingView: UIViewController, UIImagePickerControllerDelegate, UIPick
     @IBOutlet var photoImageView: UIImageView!
     @IBOutlet var clippingNameField: UITextField!
     @IBOutlet var clippingDate: UIDatePicker!
-    
+    @IBOutlet var clippingNotes: UITextView!
     
     // MARK: UIImagePickerControllerDelegate
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
@@ -37,7 +37,17 @@ class NewClippingView: UIViewController, UIImagePickerControllerDelegate, UIPick
     
     @IBAction func saveClipping(sender: AnyObject) {
         
+        let tempName : String = self.clippingNameField.text!
+        let tempDate : String = String(self.clippingDate)
+        let tempNotes : String = self.clippingNotes.text
+        let tempImg : String = "ubuntu.png"
         
+        self.collections.addClipping(tempName, clippingNote: tempNotes, clippingImage: tempImg, clippingDate: tempDate)
+        
+        if collectionName != "All Clippings" {
+            
+            self.collections.addClipToCollection(tempName, collectionName: collectionName!)
+        }
         
     }
 
