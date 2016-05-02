@@ -125,7 +125,6 @@
                         <outlet property="clippingNameField" destination="d8S-fq-sHU" id="ziC-Z3-G9g"/>
                         <outlet property="clippingNotes" destination="wnn-k4-CPQ" id="g1r-Mc-dB0"/>
                         <outlet property="photoImageView" destination="zoA-nk-gu3" id="CGB-gT-AHG"/>
-                        <segue destination="00m-cM-X6P" kind="show" identifier="returnClip" id="ZbF-oR-tg7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZGl-Tm-OPS" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -312,7 +311,6 @@
         <image name="defaultPhoto.png" width="1080" height="1080"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ZbF-oR-tg7"/>
         <segue reference="2GU-fe-wes"/>
     </inferredMetricsTieBreakers>
 </document>

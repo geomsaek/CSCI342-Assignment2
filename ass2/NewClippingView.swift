@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class NewClippingView: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @IBOutlet var photoImageView: UIImageView!
@@ -16,7 +15,6 @@ class NewClippingView: UIViewController, UITextFieldDelegate, UIImagePickerContr
     @IBOutlet var clippingDate: UIDatePicker!
     @IBOutlet var clippingNotes: UITextView!
     
-    var collections : ScrapbookModel = ScrapbookModel()
     var collectionName : String?
     var fileName = ""
     
@@ -63,11 +61,11 @@ class NewClippingView: UIViewController, UITextFieldDelegate, UIImagePickerContr
         let tempDate : String = String(self.clippingDate)
         let tempNotes : String = self.clippingNotes.text
         
-        self.collections.addClipping(tempName, clippingNote: tempNotes, clippingImage: self.fileName, clippingDate: tempDate)
+        collections.addClipping(tempName, clippingNote: tempNotes, clippingImage: self.fileName, clippingDate: tempDate)
         
         if collectionName != "All Clippings" {
             
-            self.collections.addClipToCollection(tempName, collectionName: collectionName!)
+            collections.addClipToCollection(tempName, collectionName: collectionName!)
         }
         openSaveAlert()
         
@@ -83,15 +81,15 @@ class NewClippingView: UIViewController, UITextFieldDelegate, UIImagePickerContr
                                style: .Default,
                                handler: { (action:UIAlertAction) ->Void in
                                 
+                                let imagePath = collections.fileInDocumentsDirectory(self.fileName)
+                                
+                                if let image = self.photoImageView.image {
+                                    collections.saveImage(image, path: imagePath)
+                                } else { print("some error message") }
+                                
                                 if let navController = self.navigationController {
                                     navController.popViewControllerAnimated(true)
                                 }
-                                
-                                let imagePath = self.collections.fileInDocumentsDirectory(self.fileName)
-                                
-                                if let image = self.photoImageView.image {
-                                    self.collections.saveImage(image, path: imagePath)
-                                } else { print("some error message") }
                                 
         })
         

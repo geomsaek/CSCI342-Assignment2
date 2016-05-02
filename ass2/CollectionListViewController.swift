@@ -9,9 +9,10 @@
 import UIKit
 import CoreData
 
+var collections : ScrapbookModel = ScrapbookModel()
+
 class CollectionListViewController: UITableViewController,NSFetchedResultsControllerDelegate  {
     
-    var collections : ScrapbookModel = ScrapbookModel()
     var userCollectionName : String? = nil
 
     override func viewDidLoad() {
@@ -38,7 +39,7 @@ class CollectionListViewController: UITableViewController,NSFetchedResultsContro
                                 // add a new collection
                                 if let temp = self.userCollectionName {
                                     if temp.characters.count > 0 {
-                                        self.collections.addCollection(temp)
+                                        collections.addCollection(temp)
                                         self.tableView.reloadData()
                                     }
                                 }
@@ -106,7 +107,7 @@ class CollectionListViewController: UITableViewController,NSFetchedResultsContro
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
         let clippingViewController = segue.destinationViewController as! ClippingListViewController
-        clippingViewController.collections = self.collections
+        //clippingViewController.collections = self.collections
         clippingViewController.selectedClippingIndex = self.tableView.indexPathForSelectedRow!.row
         
     }

@@ -12,26 +12,25 @@ class ClippingListViewController: UITableViewController {
     
     @IBOutlet var clippingListCells: UITableView!
     
-    var collections : ScrapbookModel = ScrapbookModel()
     var selectedClippingIndex : Int?
     var selectedCollectionName : String?
     var clipping = [[String]()]
     var allClips = [[String]()]
     
+    let searchController = UISearchController(searchResultsController: nil)
+    
     override func viewDidLoad() {
-        var temp : Int
 
         // get the name via the passed index
-        if selectedClippingIndex > 0 {
-            temp = selectedClippingIndex!-1
-            self.selectedCollectionName = self.collections.getCollectionNames(temp)
-            self.clipping = collections.getClippingNames(self.selectedCollectionName!)
-        }else {
-            self.selectedCollectionName = "All Clippings"
-            self.allClips = self.collections.displayClippings()
-        }
+        updateClipData()
 
         super.viewDidLoad()
+        
+        // Setup the Search Controller
+//        searchController.searchResultsUpdater = self
+//        searchController.searchBar.delegate = self
+//        definesPresentationContext = true
+//        searchController.dimsBackgroundDuringPresentation = false
 
     }
     
@@ -59,14 +58,14 @@ class ClippingListViewController: UITableViewController {
         if selectedClippingIndex > 0 {
             
             file = collections.fileInDocumentsDirectory(self.clipping[index][2])
-            cell.photo.image = self.collections.loadImageFromPath(file)
+            cell.photo.image = collections.loadImageFromPath(file)
             
             cell.clipTitle!.text = clipping[index][0]
             cell.clipNotes!.text = clipping[index][1]
         }else {
             // select all clippings
             file = collections.fileInDocumentsDirectory(self.allClips[index][2])
-            cell.photo.image = self.collections.loadImageFromPath(file)
+            cell.photo.image = collections.loadImageFromPath(file)
             
             cell.clipTitle!.text = self.allClips[index][0]
             cell.clipNotes!.text = self.allClips[index][1]
@@ -75,29 +74,40 @@ class ClippingListViewController: UITableViewController {
         return cell
     }
     
+    func updateSearchResultsForSearchController(searchController: UISearchController) {
+        print("ERE")
+//        var request = NSFetchRequest(entityName: "Serie")
+//        filteredTableData.removeAll(keepCapacity: false)
+//        let searchPredicate = NSPredicate(format: "SELF.infos CONTAINS[c] %@", searchController.searchBar.text)
+//        let array = (series as NSArray).filteredArrayUsingPredicate(searchPredicate)
+//        
+//        for item in array
+//        {
+//            let infoString = item.infos
+//            filteredTableData.append(infoString)
+//        }
+//        
+//        self.tableView.reloadData()
+    }
+    
     // method is called when user edits item in table
     // in context when user swipes to delete
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        
-        if let navController = self.navigationController {
-            navController.popViewControllerAnimated(true)
-        }
         
         if editingStyle == UITableViewCellEditingStyle.Delete{
             
             let index = indexPath.row
             
             if self.selectedCollectionName == "All Clippings" {
-                self.collections.deleteClipping(self.allClips[index][0])
+                collections.deleteClipping(self.allClips[index][0])
                 self.allClips.removeAtIndex(index)
+                
             }else {
-                self.collections.deleteClipping(self.clipping[index][0])
+                collections.deleteClipping(self.clipping[index][0])
                 self.clipping.removeAtIndex(index)
             }
-            
-            self.viewDidAppear(true)
-            clippingListCells.reloadData()
         }
+        self.viewWillAppear(true)
         
     }
     
@@ -137,16 +147,35 @@ class ClippingListViewController: UITableViewController {
             // selected to allow for a new clipping
             let newClippingView = segue.destinationViewController as! NewClippingView
 
-            newClippingView.collections = self.collections
+            //collections = self.collections
             newClippingView.collectionName = self.selectedCollectionName
             
         }
                 
     }
     
+    func updateClipData(){
+        
+        var temp : Int
+        if selectedClippingIndex > 0 {
+            temp = selectedClippingIndex!-1
+            self.selectedCollectionName = collections.getCollectionNames(temp)
+            self.clipping = collections.getClippingNames(self.selectedCollectionName!)
+        }else {
+            self.selectedCollectionName = "All Clippings"
+            self.allClips = collections.displayClippings()
+        }
+    }
+    
     // need to allow for the table cells to be updated
     // every time the tableview appears
     override func viewDidAppear(animated: Bool) {
+        clippingListCells.reloadData()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        updateClipData()
         clippingListCells.reloadData()
     }
 
