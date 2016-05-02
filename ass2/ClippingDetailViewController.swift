@@ -26,8 +26,13 @@ class ClippingDetailViewController: UIViewController {
     override func viewDidLoad() {
         self.mainTitle.text = self.clippingName
         self.clipNotes.text = self.notes
-        self.clipDate.text = self.clippingDte
-        self.clipMainImg.image = UIImage(named: self.imgName!)
+        
+        var temp = clippingDte?.componentsSeparatedByString(" ")
+        var mod = temp![0] + " " + temp![1]
+        self.clipDate.text = mod
+        
+        var file = collections.fileInDocumentsDirectory(imgName!)
+        self.clipMainImg.image = collections.loadImageFromPath(file)
         
         super.viewDidLoad()
         
@@ -37,4 +42,36 @@ class ClippingDetailViewController: UIViewController {
         
     }
     
+    @IBAction func deleteClipping(sender: AnyObject) {
+        
+        let alert = UIAlertController(title: "Delete Clipping",
+                                      message:  "Are you sure you want to delete this clipping?",
+                                      preferredStyle: .Alert)
+        
+        let ok = UIAlertAction(title: "OK",
+                               style: .Default,
+                               handler: { (action:UIAlertAction) ->Void in
+                               
+                               self.collections.deleteClipping(self.clippingName!)
+                               self.performSegueWithIdentifier("showColl", sender: self)
+
+        })
+        
+        let cancelAction = UIAlertAction(title: "Cancel",
+                                         style: .Default) { (action: UIAlertAction) -> Void in
+        }
+        
+        alert.addAction(ok)
+        alert.addAction(cancelAction)
+        
+        self.presentViewController(alert, animated: true, completion: nil)
+        
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+       if segue.identifier == "showColl" {
+            let collVC = segue.destinationViewController as! CollectionListViewController
+        }
+    }
+
 }

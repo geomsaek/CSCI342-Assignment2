@@ -23,6 +23,7 @@
 		C97C2B151CC5D2200069AF4E /* Clipping+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C2B111CC5D2200069AF4E /* Clipping+CoreDataProperties.swift */; };
 		C97C2B161CC5D2200069AF4E /* Clipping.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C2B121CC5D2200069AF4E /* Clipping.swift */; };
 		C97C2B181CC5DA450069AF4E /* CollectionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C2B171CC5DA450069AF4E /* CollectionListViewController.swift */; };
+		C9E589851CD6BBB40031E7E6 /* defaultPhoto.png in Resources */ = {isa = PBXBuildFile; fileRef = C9E589841CD6BBB40031E7E6 /* defaultPhoto.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		C97C2B111CC5D2200069AF4E /* Clipping+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Clipping+CoreDataProperties.swift"; path = "../Clipping+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C97C2B121CC5D2200069AF4E /* Clipping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Clipping.swift; path = ../Clipping.swift; sourceTree = "<group>"; };
 		C97C2B171CC5DA450069AF4E /* CollectionListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionListViewController.swift; sourceTree = "<group>"; };
+		C9E589841CD6BBB40031E7E6 /* defaultPhoto.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultPhoto.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +79,7 @@
 			isa = PBXGroup;
 			children = (
 				C977847F1CD5CF8300C3919D /* ubuntu.png */,
+				C9E589841CD6BBB40031E7E6 /* defaultPhoto.png */,
 				C97C2B0F1CC5D2200069AF4E /* Collection+CoreDataProperties.swift */,
 				C97C2B101CC5D2200069AF4E /* Collection.swift */,
 				C97C2B111CC5D2200069AF4E /* Clipping+CoreDataProperties.swift */,
@@ -155,6 +158,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9E589851CD6BBB40031E7E6 /* defaultPhoto.png in Resources */,
 				C97784801CD5CF8300C3919D /* ubuntu.png in Resources */,
 				C97C2AEC1CC49B350069AF4E /* LaunchScreen.storyboard in Resources */,
 				C97C2AE91CC49B350069AF4E /* Assets.xcassets in Resources */,

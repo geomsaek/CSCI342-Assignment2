@@ -10,16 +10,17 @@ import UIKit
 
 class ClippingListViewController: UITableViewController {
     
+    @IBOutlet var clippingListCells: UITableView!
+    
     var collections : ScrapbookModel = ScrapbookModel()
     var selectedClippingIndex : Int?
     var selectedCollectionName : String?
     var clipping = [[String]()]
-    
     var allClips = [[String]()]
     
     override func viewDidLoad() {
         var temp : Int
-        
+
         // get the name via the passed index
         if selectedClippingIndex > 0 {
             temp = selectedClippingIndex!-1
@@ -29,13 +30,9 @@ class ClippingListViewController: UITableViewController {
             self.selectedCollectionName = "All Clippings"
             self.allClips = self.collections.displayClippings()
         }
-        self.tableView.reloadData()
+
         super.viewDidLoad()
 
-    }
-    
-    override func didReceiveMemoryWarning() {
-        
     }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -53,18 +50,24 @@ class ClippingListViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("clip", forIndexPath: indexPath) as! ClippingCell
+        let cell = self.tableView.dequeueReusableCellWithIdentifier("clip", forIndexPath: indexPath) as! ClippingCell
         
         let index = indexPath.row
+        var file = ""
         
         // select a clipping from a collection
         if selectedClippingIndex > 0 {
-            cell.photo.image = UIImage(named: clipping[index][2])
+            
+            file = collections.fileInDocumentsDirectory(self.clipping[index][2])
+            cell.photo.image = self.collections.loadImageFromPath(file)
+            
             cell.clipTitle!.text = clipping[index][0]
             cell.clipNotes!.text = clipping[index][1]
         }else {
             // select all clippings
-            cell.photo.image = UIImage(named: self.allClips[index][2])
+            file = collections.fileInDocumentsDirectory(self.allClips[index][2])
+            cell.photo.image = self.collections.loadImageFromPath(file)
+            
             cell.clipTitle!.text = self.allClips[index][0]
             cell.clipNotes!.text = self.allClips[index][1]
         }
@@ -76,17 +79,24 @@ class ClippingListViewController: UITableViewController {
     // in context when user swipes to delete
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         
+        if let navController = self.navigationController {
+            navController.popViewControllerAnimated(true)
+        }
+        
         if editingStyle == UITableViewCellEditingStyle.Delete{
             
             let index = indexPath.row
-            var collectName : String
             
-            if indexPath.row > 0 {
-                //collectName = collections.getCollectionNames(index-1)
-                //collections.deleteCollection(collectName)
+            if self.selectedCollectionName == "All Clippings" {
+                self.collections.deleteClipping(self.allClips[index][0])
+                self.allClips.removeAtIndex(index)
+            }else {
+                self.collections.deleteClipping(self.clipping[index][0])
+                self.clipping.removeAtIndex(index)
             }
             
-            self.tableView.reloadData()
+            self.viewDidAppear(true)
+            clippingListCells.reloadData()
         }
         
     }
@@ -105,7 +115,7 @@ class ClippingListViewController: UITableViewController {
             var selectedDate : String?
             var selectedImg : String?
             
-            if selectedClippingIndex == 0 {
+            if self.selectedCollectionName == "All Clippings" {
                 selectedClip = self.allClips[index][0]
                 selectedNotes = self.allClips[index][1]
                 selectedDate = self.allClips[index][3]
@@ -132,6 +142,12 @@ class ClippingListViewController: UITableViewController {
             
         }
                 
+    }
+    
+    // need to allow for the table cells to be updated
+    // every time the tableview appears
+    override func viewDidAppear(animated: Bool) {
+        clippingListCells.reloadData()
     }
 
 }
