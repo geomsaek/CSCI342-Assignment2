@@ -317,14 +317,20 @@ class ScrapbookModel : NSObject, NSFetchedResultsControllerDelegate {
         return clippingNames
     }
     
-    func displayClippingsofCollection(collectionName: String){
+    // get a list of clippings by collection name and the name of the clipping
+    func getClippingsofCollection(collectionName: String, clipping: String) -> Array<Array<String>> {
     
-        print("============== Clippings of Collection: " + String(collectionName) + " ==============")
-        
-        let fReq: NSFetchRequest = NSFetchRequest(entityName: "Collection")
-        fReq.predicate = NSPredicate(format:"name CONTAINS '\(collectionName)' ")
+        let fReq: NSFetchRequest = NSFetchRequest(entityName: "Clipping")
+        if collectionName == "All Clippings" {
+            fReq.predicate = NSPredicate(format:"name == %@", clipping)
+        }else {
+            fReq.predicate = NSPredicate(format:"name LIKE '\(clipping)' OR name CONTAINS '\(collectionName)' ")
+        }
         let sorter: NSSortDescriptor = NSSortDescriptor(key: "name" , ascending: false)
         fReq.sortDescriptors = [sorter]
+        
+        var clippingNames = [[String()]]
+        var tempClip = [String]()
         
         do {
             result = try self.context.executeFetchRequest(fReq)
@@ -337,26 +343,24 @@ class ScrapbookModel : NSObject, NSFetchedResultsControllerDelegate {
         let fetchedCollections = result!
         
         for resultItem in fetchedCollections {
-            let collectionItem = resultItem as! Collection
+            let clippingItem = resultItem as! Clipping
+
+            tempClip.append(clippingItem.name!)
+            tempClip.append(clippingItem.notes!)
+            tempClip.append(String(clippingItem.date!))
+            tempClip.append(clippingItem.images!)
             
-            let clipList = collectionItem.clippings
-            
-            for clip in clipList! {
-                
-                let tempName = clip.name!
-                let tempNote = clip.notes!
-                let tempDate = String(clip.date!)
-                let tempImage = (clip.images ?? "") as String
-                
-                print("Name: " + tempName)
-                print("Notes: " + tempNote!)
-                print("Date: " + tempDate)
-                print("Image: " + tempImage)
-                
-            }
+            clippingNames.append(tempClip)
+            tempClip.removeAll()
         }
+        clippingNames.removeAtIndex(0)
+        return clippingNames
         
-        print("==========================================")
+    }
+    
+    func getClippings(collectionName: String, clipName: String){
+    
+    
     }
     
     // add a clipping to a collection

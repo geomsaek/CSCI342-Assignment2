@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ClippingListViewController: UITableViewController {
+class ClippingListViewController: UITableViewController, UISearchResultsUpdating {
     
     @IBOutlet var clippingListCells: UITableView!
     
@@ -17,21 +17,73 @@ class ClippingListViewController: UITableViewController {
     var clipping = [[String]()]
     var allClips = [[String]()]
     
-    let searchController = UISearchController(searchResultsController: nil)
+    
+    var nameList = [String]()
+    var filterList = [String]()
+    
+    var searchController : UISearchController!
+    var resultsController = UITableViewController()
     
     override func viewDidLoad() {
-
+        
+        self.resultsController.tableView.dataSource = self
+        self.resultsController.tableView.delegate = self
+        
+        self.searchController = UISearchController(searchResultsController: resultsController)
+        self.tableView.tableHeaderView = self.searchController.searchBar
+        self.searchController.searchResultsUpdater = self
+        definesPresentationContext = true
+        
         // get the name via the passed index
         updateClipData()
+        compileNameList()
 
         super.viewDidLoad()
         
-        // Setup the Search Controller
-//        searchController.searchResultsUpdater = self
-//        searchController.searchBar.delegate = self
-//        definesPresentationContext = true
-//        searchController.dimsBackgroundDuringPresentation = false
+    }
+    
+    func compileNameList(){
+        
+        if selectedCollectionName == "All Clippings" {
+            
+            for i in 0..<allClips.count {
+                nameList.append(allClips[i][0])
+            }
+            
+        }else {
+            
+            for i in 0..<clipping.count {
+                nameList.append(clipping[i][0])
+            }
+        }
+    
+    }
+    
+    func updateSearchResultsForSearchController(searchController: UISearchController) {
+        
+        var tempName : String?
+        
+        self.filterList = self.nameList.filter { (name:String) -> Bool in
+            if name.lowercaseString.containsString(self.searchController.searchBar.text!.lowercaseString){
+                tempName = name
+                
+                if self.selectedCollectionName == "All Clippings" {
+                    self.allClips.removeAll()
+                    self.allClips = collections.getClippingsofCollection(self.selectedCollectionName!, clipping: tempName!)
+                }else {
+                    self.clipping.removeAll()
+                    self.clipping = collections.getClippingsofCollection(self.selectedCollectionName!, clipping: tempName!)
+                    print(self.selectedCollectionName)
+                }
+                
+                return true
+            }else {
+                return false
+            }
+        }
 
+        
+        self.resultsController.tableView.reloadData()
     }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -41,10 +93,10 @@ class ClippingListViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if selectedClippingIndex > 0 {
-            return self.clipping.count
-        }else {
+        if self.selectedCollectionName == "All Clippings" {
             return self.allClips.count
+        }else {
+            return self.clipping.count
         }
     }
     
@@ -55,39 +107,23 @@ class ClippingListViewController: UITableViewController {
         var file = ""
         
         // select a clipping from a collection
-        if selectedClippingIndex > 0 {
-            
-            file = collections.fileInDocumentsDirectory(self.clipping[index][2])
-            cell.photo.image = collections.loadImageFromPath(file)
-            
-            cell.clipTitle!.text = clipping[index][0]
-            cell.clipNotes!.text = clipping[index][1]
-        }else {
+        if self.selectedCollectionName == "All Clippings" {
             // select all clippings
             file = collections.fileInDocumentsDirectory(self.allClips[index][2])
             cell.photo.image = collections.loadImageFromPath(file)
             
             cell.clipTitle!.text = self.allClips[index][0]
             cell.clipNotes!.text = self.allClips[index][1]
+        }else {
+            
+//            file = collections.fileInDocumentsDirectory(self.clipping[index][2])
+            cell.photo.image = collections.loadImageFromPath(file)
+            
+            cell.clipTitle!.text = clipping[index][0]
+            cell.clipNotes!.text = clipping[index][1]
         }
         
         return cell
-    }
-    
-    func updateSearchResultsForSearchController(searchController: UISearchController) {
-        print("ERE")
-//        var request = NSFetchRequest(entityName: "Serie")
-//        filteredTableData.removeAll(keepCapacity: false)
-//        let searchPredicate = NSPredicate(format: "SELF.infos CONTAINS[c] %@", searchController.searchBar.text)
-//        let array = (series as NSArray).filteredArrayUsingPredicate(searchPredicate)
-//        
-//        for item in array
-//        {
-//            let infoString = item.infos
-//            filteredTableData.append(infoString)
-//        }
-//        
-//        self.tableView.reloadData()
     }
     
     // method is called when user edits item in table
