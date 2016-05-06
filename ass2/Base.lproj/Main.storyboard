@@ -19,7 +19,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="55"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bGe-1U-VEp" id="2sG-d0-cQc">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="54.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="55"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                                 <connections>
@@ -194,7 +194,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="104"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" tableViewCell="M91-7y-BIP" id="Dal-PN-46X">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="103.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="104"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="t4U-FR-cC9">
@@ -240,18 +240,9 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="clippingListCells" destination="nUP-RS-EmH" id="Z7a-b8-VLC"/>
-                        <outlet property="searchDisplayController" destination="oGE-JE-Q2Y" id="TFp-nh-KRs"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ve7-CX-jUY" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <searchDisplayController id="oGE-JE-Q2Y">
-                    <connections>
-                        <outlet property="delegate" destination="00m-cM-X6P" id="Uma-TH-9BW"/>
-                        <outlet property="searchContentsController" destination="00m-cM-X6P" id="unK-re-IdR"/>
-                        <outlet property="searchResultsDataSource" destination="00m-cM-X6P" id="Fa3-bS-pY2"/>
-                        <outlet property="searchResultsDelegate" destination="00m-cM-X6P" id="sVf-O7-bv4"/>
-                    </connections>
-                </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="1369.5" y="133.5"/>
         </scene>

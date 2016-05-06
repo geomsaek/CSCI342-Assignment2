@@ -107,7 +107,6 @@ class CollectionListViewController: UITableViewController,NSFetchedResultsContro
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
         let clippingViewController = segue.destinationViewController as! ClippingListViewController
-        //clippingViewController.collections = self.collections
         clippingViewController.selectedClippingIndex = self.tableView.indexPathForSelectedRow!.row
         
     }

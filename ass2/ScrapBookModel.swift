@@ -347,8 +347,8 @@ class ScrapbookModel : NSObject, NSFetchedResultsControllerDelegate {
 
             tempClip.append(clippingItem.name!)
             tempClip.append(clippingItem.notes!)
-            tempClip.append(String(clippingItem.date!))
             tempClip.append(clippingItem.images!)
+            tempClip.append(String(clippingItem.date!))
             
             clippingNames.append(tempClip)
             tempClip.removeAll()
