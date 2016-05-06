@@ -17,20 +17,13 @@ class ClippingListViewController: UITableViewController, UISearchResultsUpdating
     var clipping = [[String]()]
     
     var searchResults = [[String()]]
-    
-    var nameList = [String]()
     var hasResults = false
-    var filterList = [String]()
     
     var searchController : UISearchController!
     var resultsController = UITableViewController()
     
-    //var clippingSearchResults = [[String]()]
-    
     
     override func viewDidLoad() {
-        
-        searchResults.removeAll()
         
         self.resultsController.tableView.dataSource = self
         self.resultsController.tableView.delegate = self
@@ -41,7 +34,6 @@ class ClippingListViewController: UITableViewController, UISearchResultsUpdating
         
         // get the name via the passed index
         updateClipData()
-        compileNameList()
 
         super.viewDidLoad()
         self.tableView.reloadData()
@@ -49,17 +41,8 @@ class ClippingListViewController: UITableViewController, UISearchResultsUpdating
         
     }
     
-    func compileNameList(){
-
-        for i in 0..<clipping.count {
-            nameList.append(clipping[i][0])
-        }    
-    }
-    
+    // function to filter clipping list against the search text input
     func updateSearchResultsForSearchController(searchController: UISearchController) {
-        
-        var tempName : String?
-        var found = false;
         
         searchResults.removeAll()
         for i in 0..<clipping.count {
@@ -73,21 +56,27 @@ class ClippingListViewController: UITableViewController, UISearchResultsUpdating
         self.resultsController.tableView.reloadData()
     }
     
+    /* standard tableView functions */
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         
         return 1
     }
     
+    /* standard tableView functions */
+    // return the count of the search results if there are search results
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if hasResults {
-            
             return self.searchResults.count
 
         }else {
             return self.clipping.count
         }
     }
+    
+    
+    /* standard tableView functions */
+    // return the cells of the table view based on if there are search results
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = self.tableView.dequeueReusableCellWithIdentifier("clip", forIndexPath: indexPath) as! ClippingCell
@@ -96,6 +85,7 @@ class ClippingListViewController: UITableViewController, UISearchResultsUpdating
         let index = indexPath.row
         var file = ""
         
+        // if there are search results then prepare the cell from the SearchResult Array
         if hasResults {
             file = collections.fileInDocumentsDirectory(self.searchResults[index][2])
             cell.photo.image = collections.loadImageFromPath(file)
@@ -104,12 +94,19 @@ class ClippingListViewController: UITableViewController, UISearchResultsUpdating
             cell.clipNotes!.text = searchResults[index][1]
             
         }else {
-        
-            file = collections.fileInDocumentsDirectory(self.clipping[index][2])
-            cell.photo.image = collections.loadImageFromPath(file)
             
-            cell.clipTitle!.text = clipping[index][0]
-            cell.clipNotes!.text = clipping[index][1]
+            // if there are no searchResults
+            // and the searchController/search field is not active
+            // if this sentinel is not here you will see all the clippings when the search bar is accessed
+            // and any sort of text is entered initially.
+            
+            if !searchController.active {
+                file = collections.fileInDocumentsDirectory(self.clipping[index][2])
+                cell.photo.image = collections.loadImageFromPath(file)
+            
+                cell.clipTitle!.text = clipping[index][0]
+                cell.clipNotes!.text = clipping[index][1]
+            }
         }
         
         return cell
@@ -129,14 +126,22 @@ class ClippingListViewController: UITableViewController, UISearchResultsUpdating
         
     }
     
+    
+    // segue to the ClipDetailViewController
+    // if the user clicks on a search result
+    // or a clipping from the collection List
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
         var index : Int
+        var selectedClip : String?
+        var selectedNotes : String?
+        var selectedDate : String?
+        var selectedImg : String?
         
         // if the segue is to show the selected clipping
         
-        if hasResults {
-
+        if hasResults && searchController.active {
             index = self.resultsController.tableView.indexPathForSelectedRow!.row
             
             var selectedClip : String?
@@ -155,18 +160,27 @@ class ClippingListViewController: UITableViewController, UISearchResultsUpdating
             clippingDetailController.notes = selectedNotes
             clippingDetailController.clippingDte = selectedDate
             clippingDetailController.imgName = selectedImg
-            
             searchController.active = false
-            self.clippingListCells.reloadData()
-            self.tableView.reloadData()
-            searchResults.removeAll()
-            hasResults = false
+            
             
         }else {
+            
+            // if the segue has occurred whilst viewing a table cell
             if segue.identifier == "ShowClipping" {
                 
                 index = self.tableView.indexPathForSelectedRow!.row
-                setSegueController(segue, selectedIndex: index)
+                
+                let clippingDetailController = segue.destinationViewController as! ClippingDetailViewController
+                
+                selectedClip = clipping[index][0]
+                selectedNotes = clipping[index][1]
+                selectedDate = clipping[index][3]
+                selectedImg = clipping[index][2]
+                
+                clippingDetailController.clippingName = selectedClip
+                clippingDetailController.notes = selectedNotes
+                clippingDetailController.clippingDte = selectedDate
+                clippingDetailController.imgName = selectedImg
                 
             }else {
                 
@@ -178,29 +192,16 @@ class ClippingListViewController: UITableViewController, UISearchResultsUpdating
             }
         }
         
-    }
-    
-    func setSegueController(segue: UIStoryboardSegue, selectedIndex: Int){
-        
-        var selectedClip : String?
-        var selectedNotes : String?
-        var selectedDate : String?
-        var selectedImg : String?
-        
-        let clippingDetailController = segue.destinationViewController as! ClippingDetailViewController
-        
-        selectedClip = clipping[selectedIndex][0]
-        selectedNotes = clipping[selectedIndex][1]
-        selectedDate = clipping[selectedIndex][3]
-        selectedImg = clipping[selectedIndex][2]
-        
-        clippingDetailController.clippingName = selectedClip
-        clippingDetailController.notes = selectedNotes
-        clippingDetailController.clippingDte = selectedDate
-        clippingDetailController.imgName = selectedImg
+        // reset all the data for the segue
+        updateClipData()
+        self.clippingListCells.reloadData()
+        self.tableView.reloadData()
+        searchResults.removeAll()
+        hasResults = false
         
     }
     
+    // get the clipping data if there is a collection associated to it
     func updateClipData(){
         
         var temp : Int
