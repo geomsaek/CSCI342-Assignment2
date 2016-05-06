@@ -114,50 +114,21 @@ class ClippingListViewController: UITableViewController, UISearchResultsUpdating
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
+        var index : Int
+        
         // if the segue is to show the selected clipping
         
         if self.searchController.active {
-            
-            let clippingDetailController = segue.destinationViewController as! ClippingDetailViewController
-            
-            let index = self.resultsController.tableView.indexPathForSelectedRow!.row
 
-            var selectedClip : String?
-            var selectedNotes : String?
-            var selectedDate : String?
-            var selectedImg : String?
-            
-            selectedClip = clipping[index][0]
-            selectedNotes = clipping[index][1]
-            selectedDate = clipping[index][3]
-            selectedImg = clipping[index][2]
-            
-            clippingDetailController.clippingName = selectedClip
-            clippingDetailController.notes = selectedNotes
-            clippingDetailController.clippingDte = selectedDate
-            clippingDetailController.imgName = selectedImg
+            index = self.resultsController.tableView.indexPathForSelectedRow!.row
+            setSegueController(segue, selectedIndex: index)
             searchController.active = false
             
-        
         }else {
             if segue.identifier == "ShowClipping" {
-                let clippingDetailController = segue.destinationViewController as! ClippingDetailViewController
                 
-                let index = self.tableView.indexPathForSelectedRow!.row
-                var selectedClip : String?
-                var selectedNotes : String?
-                var selectedDate : String?
-                var selectedImg : String?
-                
-                selectedClip = clipping[index][0]
-                selectedNotes = clipping[index][1]
-                selectedDate = clipping[index][3]
-                selectedImg = clipping[index][2]
-                
-                clippingDetailController.clippingName = selectedClip
-                clippingDetailController.notes = selectedNotes
-                clippingDetailController.clippingDte = selectedDate
-                clippingDetailController.imgName = selectedImg
+                index = self.tableView.indexPathForSelectedRow!.row
+                setSegueController(segue, selectedIndex: index)
                 
             }else {
                 
@@ -168,6 +139,27 @@ class ClippingListViewController: UITableViewController, UISearchResultsUpdating
                 newClippingView.collectionName = self.selectedCollectionName
             }
         }
+        
+    }
+    
+    func setSegueController(segue: UIStoryboardSegue, selectedIndex: Int){
+        
+        var selectedClip : String?
+        var selectedNotes : String?
+        var selectedDate : String?
+        var selectedImg : String?
+        
+        let clippingDetailController = segue.destinationViewController as! ClippingDetailViewController
+        
+        selectedClip = clipping[selectedIndex][0]
+        selectedNotes = clipping[selectedIndex][1]
+        selectedDate = clipping[selectedIndex][3]
+        selectedImg = clipping[selectedIndex][2]
+        
+        clippingDetailController.clippingName = selectedClip
+        clippingDetailController.notes = selectedNotes
+        clippingDetailController.clippingDte = selectedDate
+        clippingDetailController.imgName = selectedImg
         
     }
     
