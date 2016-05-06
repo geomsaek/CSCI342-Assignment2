@@ -31,6 +31,9 @@ class NewClippingView: UIViewController, UITextFieldDelegate, UIImagePickerContr
         imagePickerController.delegate = self
         presentViewController(imagePickerController, animated: true, completion: nil)
         
+        //textView.textColor = UIColor.lightGrayColor()
+        
+        
     }
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
@@ -105,11 +108,11 @@ class NewClippingView: UIViewController, UITextFieldDelegate, UIImagePickerContr
         
         let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         
-        var randomString : NSMutableString = NSMutableString(capacity: len)
+        let randomString : NSMutableString = NSMutableString(capacity: len)
         
-        for (var i=0; i < len; i++){
-            var length = UInt32 (letters.length)
-            var rand = arc4random_uniform(length)
+        for _ in 0..<len {
+            let length = UInt32 (letters.length)
+            let rand = arc4random_uniform(length)
             randomString.appendFormat("%C", letters.characterAtIndex(Int(rand)))
         }
         

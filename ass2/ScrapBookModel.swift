@@ -23,7 +23,6 @@ class ScrapbookModel : NSObject, NSFetchedResultsControllerDelegate {
     var result: [AnyObject]?
     
     
-    
     // add a new collection
     func addCollection(collectionName: String){
         
@@ -106,6 +105,7 @@ class ScrapbookModel : NSObject, NSFetchedResultsControllerDelegate {
 
     }
     
+    // get all collection entities
     func getCollection() -> AnyObject {
         let fReq: NSFetchRequest = NSFetchRequest(entityName: "Collection")
         let sorter: NSSortDescriptor = NSSortDescriptor(key: "name", ascending: false)
@@ -122,6 +122,7 @@ class ScrapbookModel : NSObject, NSFetchedResultsControllerDelegate {
         return result!
     }
     
+    // count the number of collections
     func countCollections()-> Int {
         
         let colRes = self.getCollection()
@@ -129,6 +130,7 @@ class ScrapbookModel : NSObject, NSFetchedResultsControllerDelegate {
         return colRes.count
     }
     
+    // get the clipping from a collection
     func getClipping(collection: String) -> AnyObject {
         
         let fReq: NSFetchRequest = NSFetchRequest(entityName: "Collection")
@@ -158,6 +160,7 @@ class ScrapbookModel : NSObject, NSFetchedResultsControllerDelegate {
         return clipList!
     }
     
+    // count the number of clippings in a collection
     func countClippings(collection: String) -> Int {
         
         let len = self.getClipping(collection)
@@ -165,6 +168,7 @@ class ScrapbookModel : NSObject, NSFetchedResultsControllerDelegate {
     
     }
     
+    // get a collection based on a passed index
     func getCollectionNames(index: Int) -> String {
     
         let fReq: NSFetchRequest = NSFetchRequest(entityName: "Collection")
@@ -196,6 +200,8 @@ class ScrapbookModel : NSObject, NSFetchedResultsControllerDelegate {
         
     }
     
+    // get series of clipping names based on a passed collection name
+    // returns an array of strings containing matched clipping information
     func getClippingNames(collectionName: String) -> Array<Array <String>> {
         
         let fReq: NSFetchRequest = NSFetchRequest(entityName: "Collection")
@@ -317,14 +323,20 @@ class ScrapbookModel : NSObject, NSFetchedResultsControllerDelegate {
         return clippingNames
     }
     
-    func displayClippingsofCollection(collectionName: String){
+    // get a list of clippings by collection name and the name of the clipping
+    func getClippingsofCollection(collectionName: String, clipping: String) -> Array<Array<String>> {
     
-        print("============== Clippings of Collection: " + String(collectionName) + " ==============")
-        
-        let fReq: NSFetchRequest = NSFetchRequest(entityName: "Collection")
-        fReq.predicate = NSPredicate(format:"name CONTAINS '\(collectionName)' ")
+        let fReq: NSFetchRequest = NSFetchRequest(entityName: "Clipping")
+        if collectionName == "All Clippings" {
+            fReq.predicate = NSPredicate(format:"name == %@", clipping)
+        }else {
+            fReq.predicate = NSPredicate(format:"name LIKE '\(clipping)' OR name CONTAINS '\(collectionName)' ")
+        }
         let sorter: NSSortDescriptor = NSSortDescriptor(key: "name" , ascending: false)
         fReq.sortDescriptors = [sorter]
+        
+        var clippingNames = [[String()]]
+        var tempClip = [String]()
         
         do {
             result = try self.context.executeFetchRequest(fReq)
@@ -337,26 +349,19 @@ class ScrapbookModel : NSObject, NSFetchedResultsControllerDelegate {
         let fetchedCollections = result!
         
         for resultItem in fetchedCollections {
-            let collectionItem = resultItem as! Collection
+            let clippingItem = resultItem as! Clipping
+
+            tempClip.append(clippingItem.name!)
+            tempClip.append(clippingItem.notes!)
+            tempClip.append(clippingItem.images!)
+            tempClip.append(String(clippingItem.date!))
             
-            let clipList = collectionItem.clippings
-            
-            for clip in clipList! {
-                
-                let tempName = clip.name!
-                let tempNote = clip.notes!
-                let tempDate = String(clip.date!)
-                let tempImage = (clip.images ?? "") as String
-                
-                print("Name: " + tempName)
-                print("Notes: " + tempNote!)
-                print("Date: " + tempDate)
-                print("Image: " + tempImage)
-                
-            }
+            clippingNames.append(tempClip)
+            tempClip.removeAll()
         }
+        clippingNames.removeAtIndex(0)
+        return clippingNames
         
-        print("==========================================")
     }
     
     // add a clipping to a collection
@@ -398,11 +403,17 @@ class ScrapbookModel : NSObject, NSFetchedResultsControllerDelegate {
         }
     }
     
+    
+    
+    // additional functions
+    
+    // get the document URL
     func getDocumentsURL() -> NSURL {
         let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
         return documentsURL
     }
     
+    // get a file path from the document URL function
     func fileInDocumentsDirectory(filename: String) -> String {
         
         let fileURL = getDocumentsURL().URLByAppendingPathComponent(filename)
@@ -410,6 +421,7 @@ class ScrapbookModel : NSObject, NSFetchedResultsControllerDelegate {
         
     }
     
+    // create an image from a string
     func loadImageFromPath(path: String) -> UIImage? {
         
         let image = UIImage(contentsOfFile: path)
@@ -417,6 +429,7 @@ class ScrapbookModel : NSObject, NSFetchedResultsControllerDelegate {
         
     }
     
+    // save an image to a document directory
     func saveImage (image: UIImage, path: String ) -> Bool{
         
         let pngImageData = UIImagePNGRepresentation(image)
